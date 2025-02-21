@@ -1,7 +1,7 @@
 export const promptTrumpSelection = (scene) => {
     if (!scene.highestBidder) return;
   
-    const suits = ["spades", "hearts", "diamonds", "clubs"];
+    const suits = ["♠️", "♥️", "♦️", "♣️"];
     let xOffset = scene.highestBidder.x - 50;
     let suitButtons = [];
   
@@ -20,7 +20,7 @@ export const promptTrumpSelection = (scene) => {
         });
   
       suitButtons.push(suitButton);
-      xOffset += 100;
+      xOffset += 40; // space between trump suit 
     });
   };
   

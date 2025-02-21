@@ -1,22 +1,27 @@
-
 export const startBiddingPhase = (scene) => {
-    scene.currentBidderIndex = 0;
-    scene.bids = [];
-    scene.highestBid = 14;
-    scene.highestBidder = null;
-    promptBid(scene);
-  };
+  // Identify dealer and start bidding with the next player (clockwise)
+  const dealerIndex = scene.players.findIndex(player => player.name === "Player 4"); 
+  scene.currentBidderIndex = (dealerIndex + 1) % scene.players.length;
+
+  scene.bids = [];
+  scene.highestBid = 15;
+  scene.highestBidder = null;
+  promptBid(scene);
+};
+
   
   export const promptBid = (scene) => {
     const currentPlayer = scene.players[scene.currentBidderIndex];
     let bidValue = scene.highestBid; // Start from current highest bid
+   
   
-    const bidText = scene.add.text(currentPlayer.x, currentPlayer.y - 100, `Bid: ${bidValue}`, {
+    const bidText = scene.add.text(currentPlayer.x+ 10, currentPlayer.y - 30, `Bid: ${bidValue}`, {
       fontSize: "12px",
-      color: "#fff",
-    }).setOrigin(0.5);
+      color: "#FFFF00",
+      fontStyle: "bold",
+    }).setOrigin(0.5,0.5);
   
-    const increaseBidButton = scene.add.text(currentPlayer.x - 40, currentPlayer.y - 80, "▲", {
+    const increaseBidButton = scene.add.text(currentPlayer.x - 40, currentPlayer.y - 40, "▲", {
       fontSize: "12px",
       backgroundColor: "#28a745",
       padding: { x: 5, y: 5 },
@@ -30,7 +35,7 @@ export const startBiddingPhase = (scene) => {
         }
       });
   
-    const bidButton = scene.add.text(currentPlayer.x - 50, currentPlayer.y - 50, "Bid", {
+    const bidButton = scene.add.text(currentPlayer.x - 50, currentPlayer.y - 10, "Bid", {
       fontSize: "12px",
       backgroundColor: "#28a745",
       padding: { x: 10, y: 5 },
@@ -46,8 +51,8 @@ export const startBiddingPhase = (scene) => {
           passButton.destroy();
         }
       });
-  
-    const passButton = scene.add.text(currentPlayer.x + 50, currentPlayer.y - 50, "Pass", {
+  // y moved to down
+    const passButton = scene.add.text(currentPlayer.x + 50, currentPlayer.y - 10, "Pass", {
       fontSize: "12px",
       backgroundColor: "#dc3545",
       padding: { x: 10, y: 5 },

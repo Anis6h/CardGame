@@ -48,7 +48,7 @@ export const handleCardSelection = (scene, player, card) => {
 
   scene.tweens.add({
     targets: card.sprite,
-    x: tableCenterX - (2.1 * cardSpacing) + trickIndex * cardSpacing, // 2.1 on the right side
+    x: tableCenterX - (1.7 * cardSpacing) + trickIndex * cardSpacing, // 2.7 on the right side
     y: tableCenterY,
     duration: 500,
     ease: "Power2",
@@ -69,13 +69,16 @@ export const handleCardSelection = (scene, player, card) => {
   }
 };
 
-
+export const updateTeamScores = (scene) => {
+  scene.teamScores.teamAText.setText(`Team A: ${scene.teamScores.teamA}`);
+  scene.teamScores.teamBText.setText(`Team B: ${scene.teamScores.teamB}`);
+};
 
 export const dealInitialCards = (scene) => {
   scene.players.forEach((player) => {
     player.cards = [];
-    const cardSpacing = 73;
-    const cardOffsetY = 30;
+    const cardSpacing = 64;
+    const cardOffsetY = 5;
 
     for (let i = 0; i < 4; i++) {
       const assignedCard = scene.deck.pop();
@@ -87,7 +90,7 @@ export const dealInitialCards = (scene) => {
       // Create card sprite at player's position
       const cardSprite = scene.add.image(500, 300, assignedCard.id)
 
-        .setScale(0.15)
+        .setScale(0.12) // Cards size chnages
         .setInteractive(); // ✅ Make it clickable
 
       // ✅ Log to confirm sprite exists
@@ -117,8 +120,8 @@ export const dealInitialCards = (scene) => {
 export const dealExtraCards = (scene) => {
   scene.players.forEach((player) => {
     player.extraCards = player.extraCards || [];
-    const cardSpacing = 73;
-    const cardOffsetY = 50; // More spacing for extra cards
+    const cardSpacing = 63;
+    const cardOffsetY = 20; // More spacing for extra cards
 
     for (let i = 0; i < 4; i++) {
       const assignedCard = scene.deck.pop();
@@ -126,8 +129,15 @@ export const dealExtraCards = (scene) => {
 
       // Display the actual card image
       const cardSprite = scene.add.image(500, 300, assignedCard.id)
-        .setScale(0.15)
-        .setVisible(true);
+        .setScale(0.12) // Cards size change
+        .setVisible(true)
+        .setInteractive(); // ✅ Make extra card interactive
+
+      // ✅ Set click event for the extra cards
+      cardSprite.on('pointerdown', () => {
+        console.log(`Clicked on extra card: ${assignedCard.rank} of ${assignedCard.suit}`);
+        handleCardSelection(scene, player, assignedCard);
+      });
 
       scene.tweens.add({
         targets: cardSprite,
@@ -141,6 +151,7 @@ export const dealExtraCards = (scene) => {
     }
   });
 };
+
 
 // New function to flip the cards of the player who selected the trump suit
 export const flipPlayerCards = (scene, player) => {

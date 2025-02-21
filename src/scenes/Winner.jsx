@@ -6,7 +6,7 @@ export const determineTrickWinner = (scene, playedCards) => {
 
   let winningCard = playedCards[0]?.card; 
   let winningPlayer = playedCards[0]?.player;
-
+  determineWinner
   if (!winningCard || !winningPlayer) {
     console.error("❌ Invalid card or player in trick.");
     return null;
